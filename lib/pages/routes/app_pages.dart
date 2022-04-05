@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:portaventory/pages/add_item/add_item_view.dart';
+import 'package:portaventory/pages/add_item/add_item_view_binding.dart';
 import 'package:portaventory/pages/home/home_view_binding.dart';
 import 'package:portaventory/pages/scanner/scanner_view.dart';
 import 'package:portaventory/pages/scanner/scanner_view_binding.dart';
@@ -18,6 +20,11 @@ class AppPages {
       name: Routes.scanner,
       binding: ScannerViewBinding(),
       page: () => const ScannerView(),
+    ),
+    GetPage(
+      name: Routes.addItem,
+      binding: AddItemViewBinding(),
+      page: () => const AddItemView(),
     ),
   ];
 }

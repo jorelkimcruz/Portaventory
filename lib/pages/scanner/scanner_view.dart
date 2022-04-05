@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:portaventory/pages/scanner/scanner_view_controller.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../helpers/exported_packages.dart';
@@ -13,6 +9,7 @@ class ScannerView extends GetView<ScannerViewController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppBarWidget(),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -23,15 +20,6 @@ class ScannerView extends GetView<ScannerViewController> {
                   controller.onQRViewCreated(qrController),
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (controller.result != null)
-                  ? Text(
-                      'Barcode Type: ${describeEnum(controller.result!.format)}   Data: ${controller.result!.code}')
-                  : Text('Scan a code'),
-            ),
-          )
         ],
       ),
     );
