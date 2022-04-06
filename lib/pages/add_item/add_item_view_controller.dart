@@ -25,7 +25,9 @@ class AddItemViewController extends GetxController with StateMixin {
   }
 
   Future<Item> insert(Item item) async {
-    item.id = await database.insert(Item.tableItem, item.toMap());
+    // Store some objects
+    final _storeRef = intMapStoreFactory.store();
+    await _storeRef.add(database, item.toMap());
     return item;
   }
 }

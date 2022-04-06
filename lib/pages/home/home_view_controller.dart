@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:portaventory/helpers/exported_packages.dart';
 
 import '../../entity/item/item.dart';
@@ -5,6 +8,7 @@ import '../../entity/item/item.dart';
 class HomeViewController extends GetxController with StateMixin {
   HomeViewController();
 
+  StoreRef<int, Map<String, Object?>>? _storeRef;
   Database? _database;
 
   RxList<Item> items = RxList<Item>([]);
@@ -13,17 +17,15 @@ class HomeViewController extends GetxController with StateMixin {
 
   @override
   void onInit() async {
-    var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'demo.db');
+// File path to a file in the current directory
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    String dbPath = join(appDocPath, 'ventport.db');
+    DatabaseFactory dbFactory = databaseFactoryIo;
 
-    // open the database
-    _database = await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-      // When creating the db, create the table
-      await db.execute(
-        Item.rawQuery,
-      );
-    });
+// We use the database factory to open the database
+    _database = await dbFactory.openDatabase(dbPath);
+    _storeRef = intMapStoreFactory.store();
 
     items.value = await getItems();
 
@@ -31,7 +33,9 @@ class HomeViewController extends GetxController with StateMixin {
   }
 
   Future<List<Item>> getItems() async {
-    List<Map<String, Object?>> list = await _database!.query(Item.tableItem);
-    return list.isNotEmpty ? list.map((e) => Item.fromMap(e)).toList() : [];
+    var itemsSnap = await _storeRef!.find(_database!, finder: Finder());
+    return itemsSnap.isNotEmpty
+        ? itemsSnap.map((e) => Item.fromMap(e.value)).toList()
+        : [];
   }
 }

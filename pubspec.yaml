@@ -28,7 +28,8 @@ dependencies:
   get: null
   qr_code_scanner:
   qr_flutter:
-  sqflite:
+  sembast:
+  path_provider:
 
 dev_dependencies:
   build_runner: null
