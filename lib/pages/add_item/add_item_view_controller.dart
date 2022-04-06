@@ -17,9 +17,11 @@ class AddItemViewController extends GetxController with StateMixin {
     item.type = type.value;
     item.name = name.text;
     item.description = description.text;
+
     try {
       await insert(item);
     } catch (error) {
+      print('ERROR $error');
       rethrow;
     }
   }
@@ -28,6 +30,7 @@ class AddItemViewController extends GetxController with StateMixin {
     // Store some objects
     final _storeRef = intMapStoreFactory.store();
     await _storeRef.add(database, item.toMap());
+
     return item;
   }
 }

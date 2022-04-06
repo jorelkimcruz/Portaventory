@@ -26,10 +26,10 @@ dependencies:
     sdk: flutter
   flutter_easyloading: null
   get: null
+  path_provider:
   qr_code_scanner:
   qr_flutter:
   sembast:
-  path_provider:
 
 dev_dependencies:
   build_runner: null
@@ -43,6 +43,7 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   lint: null
+  mockito:
   retrofit_generator: null
 
 flutter_gen:

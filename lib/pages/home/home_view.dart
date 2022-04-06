@@ -36,9 +36,24 @@ class HomeView extends GetView<HomeViewController> {
             child: Obx(() {
               return ListView.separated(
                   itemBuilder: (cntx, index) {
-                    return ListTile(
-                      title: Text(controller.items[index].name ?? 'N/A'),
-                      trailing: const Icon(Icons.more_vert),
+                    return Dismissible(
+                      key: UniqueKey(),
+                      child: ListTile(
+                        title: Text(controller.items[index].name ?? 'N/A'),
+                        trailing: const Icon(Icons.more_vert),
+                      ),
+                      onDismissed: (_) {
+                        controller.removeItem(controller.items[index]);
+                      },
+                      background: Container(
+                        color: Colors.red,
+                        margin: const EdgeInsets.symmetric(horizontal: 15),
+                        alignment: Alignment.centerRight,
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
                     );
                   },
                   separatorBuilder: (a, b) {

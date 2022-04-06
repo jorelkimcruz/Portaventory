@@ -31,15 +31,16 @@ class HomeViewController extends GetxController with StateMixin {
 
 // Track query changes
     _storeRef!.addOnChangesListener(_database!, (transaction, changes) async {
-      print(transaction);
       for (var change in changes) {
-        final item = Item.fromMap(change.newValue!);
+        final item = Item.fromMap(change);
         if (change.isAdd) {
           items.addAll(mapChanges(changes));
         } else if (change.isUpdate) {
-          items[items.indexOf(item)] = item;
+          final indexx = items.indexWhere(
+              (element) => element.id == null || element.id == item.id);
+          items[indexx] = item;
         } else if (change.isDelete) {
-          items.removeWhere((element) => element.id == item.id);
+          removeItem(item);
         }
       }
     });
@@ -55,14 +56,18 @@ class HomeViewController extends GetxController with StateMixin {
     super.onClose();
   }
 
-  List<Item> mapChanges(List<RecordChange<int, Map<String, Object?>>> changes) {
-    return changes.map((e) => Item.fromMap(e.newValue!)).toList();
+  void removeItem(Item item) async {
+    await _storeRef!.record(item.id!).delete(_database!);
+  }
+
+  List<Item> mapChanges<T>(changes) {
+    return changes.map((e) => Item.fromMap(e)).toList();
   }
 
   List<Item> mapItems(
       List<RecordSnapshot<int, Map<String, Object?>>> snapshot) {
     return snapshot.isNotEmpty
-        ? snapshot.map((e) => Item.fromMap(e.value)).toList()
+        ? snapshot.map((e) => Item.fromMap(e)).toList()
         : [];
   }
 
