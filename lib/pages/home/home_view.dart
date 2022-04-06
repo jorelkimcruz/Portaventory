@@ -12,6 +12,7 @@ class HomeView extends GetView<HomeViewController> {
     controller;
     return Scaffold(
       appBar: AppBarWidget(
+        title: 'Portaventory',
         actions: [
           IconButton(
             onPressed: () => Get.toNamed(Routes.addItem,
