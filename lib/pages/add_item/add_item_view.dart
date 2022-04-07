@@ -55,10 +55,11 @@ class AddItemView extends GetView<AddItemViewController> {
               ),
               const Spacer(),
               ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   if (controller.formKey.currentState!.validate()) {
                     try {
-                      controller.saveItem();
+                      await controller.saveItem();
+                      Get.back();
                     } catch (error) {
                       printError(info: error.toString());
                     }

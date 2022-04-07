@@ -39,15 +39,15 @@ class Item {
     return map;
   }
 
-  Item.fromMap(RecordChange<int, Map<String, Object?>> change) {
-    final map = change.newSnapshot!.value;
-    id = change.ref.key;
+  Item.fromMap(int key, Map<String, Object?> change) {
+    final map = change;
+    id = key;
     type = map[columnType] as String?;
     name = map[columnName] as String?;
     description = map[columnDescription] as String?;
     if (map[columnChildren] != null) {
       children = (map[columnChildren] as List<dynamic>)
-          .map((e) => Item.fromMap(e))
+          .map((e) => Item.fromMap(key, e))
           .toList();
     }
   }

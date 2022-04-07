@@ -37,7 +37,7 @@ void main() {
         expect((map['children'] as List)[1]['name'], 'name02');
         expect((map['children'] as List)[1]['description'], 'description02');
 
-        final mappedItem = Item.fromMap(map);
+        final mappedItem = Item.fromMap(0, map);
         expect(mappedItem.id, 0);
         expect(mappedItem.name, 'name1');
       });

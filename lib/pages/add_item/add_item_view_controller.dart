@@ -12,7 +12,7 @@ class AddItemViewController extends GetxController with StateMixin {
   final TextEditingController description = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  void saveItem() async {
+  Future<void> saveItem() async {
     final item = Item();
     item.type = type.value;
     item.name = name.text;
@@ -20,6 +20,7 @@ class AddItemViewController extends GetxController with StateMixin {
 
     try {
       await insert(item);
+      return;
     } catch (error) {
       print('ERROR $error');
       rethrow;
@@ -29,8 +30,13 @@ class AddItemViewController extends GetxController with StateMixin {
   Future<Item> insert(Item item) async {
     // Store some objects
     final _storeRef = intMapStoreFactory.store();
-    await _storeRef.add(database, item.toMap());
-
-    return item;
+    final count = await _storeRef.count(database,
+        filter: Filter.equals(Item.columnName, item.name));
+    if (count == 0) {
+      await _storeRef.add(database, item.toMap());
+      return item;
+    } else {
+      throw 'Name already exists!';
+    }
   }
 }

@@ -40,6 +40,8 @@ class HomeView extends GetView<HomeViewController> {
                       key: UniqueKey(),
                       child: ListTile(
                         title: Text(controller.items[index].name ?? 'N/A'),
+                        subtitle:
+                            Text(controller.items[index].description ?? 'N/A'),
                         trailing: const Icon(Icons.more_vert),
                       ),
                       onDismissed: (_) {
