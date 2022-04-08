@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:portaventory/helpers/exported_packages.dart';
-
 import '../../entity/item/item.dart';
 
 class HomeViewController extends GetxController with StateMixin {
@@ -10,9 +9,6 @@ class HomeViewController extends GetxController with StateMixin {
   Database database;
 
   RxList<Item> items = RxList<Item>([]);
-
-  StreamSubscription<List<RecordSnapshot<int, Map<String, Object?>>>>?
-      _subscription;
 
   @override
   void onInit() async {
@@ -28,7 +24,7 @@ class HomeViewController extends GetxController with StateMixin {
           items[indexx] = item;
         } else if (change.isDelete) {
           final item = Item.fromMap(change.ref.key, change.oldSnapshot!.value);
-          removeItem(item);
+          items.removeWhere((element) => element.id == item.id);
         }
       }
     });
@@ -40,12 +36,12 @@ class HomeViewController extends GetxController with StateMixin {
 
   @override
   void onClose() {
-    unawaited(_subscription?.cancel());
+    storeRef.removeOnChangesListener(database, (transaction, changes) {});
     super.onClose();
   }
 
-  void removeItem(Item item) async {
-    await storeRef.record(item.id!).delete(database);
+  Future<int?> removeItem(Item item) async {
+    return storeRef.record(item.id!).delete(database);
   }
 
   List<Item> mapChanges(List<RecordChange<int, Map<String, Object?>>> changes) {

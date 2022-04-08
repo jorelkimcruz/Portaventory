@@ -44,8 +44,8 @@ class HomeView extends GetView<HomeViewController> {
                             Text(controller.items[index].description ?? 'N/A'),
                         trailing: const Icon(Icons.more_vert),
                       ),
-                      onDismissed: (_) {
-                        controller.removeItem(controller.items[index]);
+                      onDismissed: (_) async {
+                        await controller.removeItem(controller.items[index]);
                       },
                       background: Container(
                         color: Colors.red,

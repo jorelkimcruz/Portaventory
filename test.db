@@ -1,0 +1,3 @@
+{"version":1,"sembast":1}
+{"key":1,"value":{"name":"name1","description":"description1","type":"storage1","children":[{"name":"name01","description":"description01","type":"type01","_id":1},{"name":"name02","description":"description02","type":"type02","_id":2}],"_id":0}}
+{"key":2,"value":{"name":"name1","description":"description1","type":"storage1","children":[{"name":"name01","description":"description01","type":"type01","_id":1},{"name":"name02","description":"description02","type":"type02","_id":2}],"_id":0}}
