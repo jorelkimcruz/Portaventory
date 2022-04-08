@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
