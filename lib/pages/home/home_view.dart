@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:portaventory/entity/item/item.dart';
 import 'package:portaventory/pages/add_item/add_item_view_binding.dart';
 import 'package:portaventory/pages/home/home_view_controller.dart';
 import 'package:portaventory/pages/routes/app_pages.dart';
@@ -15,8 +17,17 @@ class HomeView extends GetView<HomeViewController> {
         title: 'Portaventory',
         actions: [
           IconButton(
-            onPressed: () => Get.toNamed(Routes.addItem,
-                arguments: AddItemArguments(database: controller.database)),
+            onPressed: () async {
+              final result = await Get.toNamed(Routes.addItem,
+                  arguments: AddItemArguments(database: controller.database));
+
+              print('++++>  $result');
+              if (result == 'success') {
+                MotionToast.success(
+                        description: const Text("Item Added!"), width: 300)
+                    .show(context);
+              }
+            },
             icon: const Icon(Icons.add),
             tooltip: 'Add Item',
           )
@@ -34,43 +45,48 @@ class HomeView extends GetView<HomeViewController> {
           // ),
           Expanded(
             child: Obx(() {
-              return ListView.separated(
-                  itemBuilder: (cntx, index) {
-                    return Dismissible(
-                      key: UniqueKey(),
-                      child: ListTile(
-                        title: Text(controller.items[index].name ?? 'N/A'),
-                        subtitle:
-                            Text(controller.items[index].description ?? 'N/A'),
-                        trailing: const Icon(Icons.more_vert),
-                      ),
-                      onDismissed: (_) async {
-                        await controller.removeItem(controller.items[index]);
-                      },
-                      background: Container(
-                        color: Colors.red,
-                        margin: const EdgeInsets.symmetric(horizontal: 15),
-                        alignment: Alignment.centerRight,
-                        child: const Icon(
-                          Icons.delete,
-                          color: Colors.white,
+              return Scrollbar(
+                child: ListView.separated(
+                    itemBuilder: (cntx, index) {
+                      return Dismissible(
+                        key: UniqueKey(),
+                        child: ListTile(
+                          title: Text(controller.items[index].name ?? 'N/A'),
+                          subtitle: Text(
+                              controller.items[index].description ?? 'N/A'),
+                          trailing:
+                              controller.items[index].type == ItemType.storage
+                                  ? const Icon(Icons.inventory_2)
+                                  : const SizedBox(),
                         ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (a, b) {
-                    return const Divider();
-                  },
-                  itemCount: controller.items.length);
+                        onDismissed: (_) async {
+                          await controller.removeItem(controller.items[index]);
+                        },
+                        background: Container(
+                          color: Colors.red,
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          alignment: Alignment.centerRight,
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (a, b) {
+                      return const Divider();
+                    },
+                    itemCount: controller.items.length),
+              );
             }),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Get.toNamed(
                 Routes.scanner,
               );
             },
-            child: Text('SCAN QR CODE'),
+            child: const Text('SCAN QR CODE'),
           ),
         ],
       ),

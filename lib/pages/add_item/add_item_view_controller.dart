@@ -14,7 +14,10 @@ class AddItemViewController extends GetxController with StateMixin {
 
   Future<void> saveItem() async {
     final item = Item();
-    item.type = type.value;
+    item.type = type.value.toLowerCase() == ItemType.item.name
+        ? ItemType.item
+        : ItemType.storage;
+
     item.name = name.text;
     item.description = description.text;
 

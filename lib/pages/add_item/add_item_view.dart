@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
 import 'package:portaventory/components/form_fields/textfield.dart';
 import 'package:portaventory/pages/add_item/add_item_view_controller.dart';
 import '../../helpers/exported_packages.dart';
@@ -59,9 +60,11 @@ class AddItemView extends GetView<AddItemViewController> {
                   if (controller.formKey.currentState!.validate()) {
                     try {
                       await controller.saveItem();
-                      Get.back();
+                      Get.back(result: 'success');
                     } catch (error) {
                       printError(info: error.toString());
+                      MotionToast.error(description: Text(error.toString()))
+                          .show(context);
                     }
                   }
                 },

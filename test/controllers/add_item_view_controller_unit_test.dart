@@ -92,19 +92,19 @@ void main() {
       item.id = 1;
       item.description = 'description1';
       item.name = 'name1';
-      item.type = 'storage1';
+      item.type = ItemType.storage;
       item.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
       binding([item]).builder();
@@ -171,19 +171,19 @@ void main() {
       item.id = 1;
       item.description = 'description1';
       item.name = 'name1';
-      item.type = 'storage1';
+      item.type = ItemType.storage;
       item.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
       await controller.insert(item);

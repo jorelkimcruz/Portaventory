@@ -2,7 +2,7 @@ import 'package:sembast/sembast.dart';
 
 class Item {
   int? id;
-  String? type;
+  ItemType? type;
   String? name;
   String? description;
   List<Item>? children;
@@ -27,7 +27,7 @@ class Item {
     var map = <String, Object?>{
       columnName: name,
       columnDescription: description,
-      columnType: type,
+      columnType: type!.name,
     };
 
     if (children != null && children!.isNotEmpty) {
@@ -42,7 +42,9 @@ class Item {
   Item.fromMap(int key, Map<String, Object?> change) {
     final map = change;
     id = key;
-    type = map[columnType] as String?;
+    type = ItemType.values.firstWhere(
+        (element) => element.name == map[columnType],
+        orElse: () => ItemType.item);
     name = map[columnName] as String?;
     description = map[columnDescription] as String?;
     if (map[columnChildren] != null) {
@@ -51,4 +53,9 @@ class Item {
           .toList();
     }
   }
+}
+
+enum ItemType {
+  storage,
+  item,
 }

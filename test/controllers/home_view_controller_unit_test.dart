@@ -59,19 +59,19 @@ void main() {
     item.id = 0;
     item.description = 'description1';
     item.name = 'name1';
-    item.type = 'storage1';
+    item.type = ItemType.storage;
     item.children = [
       Item(
         id: 01,
         name: 'name01',
         description: 'description01',
-        type: 'type01',
+        type: ItemType.storage,
       ),
       Item(
         id: 02,
         name: 'name02',
         description: 'description02',
-        type: 'type02',
+        type: ItemType.storage,
       )
     ];
 
@@ -124,19 +124,19 @@ void main() {
       item.id = 1;
       item.description = 'description1';
       item.name = 'name1';
-      item.type = 'storage1';
+      item.type = ItemType.storage;
       item.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
       binding([item]).builder();
@@ -201,19 +201,19 @@ void main() {
       item.id = 0;
       item.description = 'description1';
       item.name = 'name1';
-      item.type = 'storage1';
+      item.type = ItemType.storage;
       item.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
 
@@ -230,19 +230,19 @@ void main() {
       item.id = 0;
       item.description = 'description1';
       item.name = 'name1';
-      item.type = 'storage1';
+      item.type = ItemType.storage;
       item.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
       binding([item]).builder();
@@ -278,19 +278,19 @@ void main() {
       item.id = 0;
       item.description = 'description1';
       item.name = 'name1';
-      item.type = 'storage1';
+      item.type = ItemType.storage;
       item.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
 
@@ -298,19 +298,19 @@ void main() {
       item2.id = 0;
       item2.description = 'description1';
       item2.name = 'name1';
-      item2.type = 'storage1';
+      item2.type = ItemType.storage;
       item2.children = [
         Item(
           id: 01,
           name: 'name01',
           description: 'description01',
-          type: 'type01',
+          type: ItemType.storage,
         ),
         Item(
           id: 02,
           name: 'name02',
           description: 'description02',
-          type: 'type02',
+          type: ItemType.storage,
         )
       ];
       binding([item, item2]).builder();
@@ -346,19 +346,19 @@ void main() {
         item.id = 1;
         item.description = 'description1';
         item.name = 'name1';
-        item.type = 'storage1';
+        item.type = ItemType.storage;
         item.children = [
           Item(
             id: 01,
             name: 'name01',
             description: 'description01',
-            type: 'type01',
+            type: ItemType.storage,
           ),
           Item(
             id: 02,
             name: 'name02',
             description: 'description02',
-            type: 'type02',
+            type: ItemType.storage,
           )
         ];
 
@@ -366,19 +366,19 @@ void main() {
         item2.id = 2;
         item2.description = 'description11';
         item2.name = 'name11';
-        item2.type = 'storage11';
+        item2.type = ItemType.storage;
         item2.children = [
           Item(
             id: 01,
             name: 'name011',
             description: 'description011',
-            type: 'type011',
+            type: ItemType.storage,
           ),
           Item(
             id: 02,
             name: 'name012',
             description: 'description02',
-            type: 'type012',
+            type: ItemType.storage,
           )
         ];
         binding([item, item2]).builder();
