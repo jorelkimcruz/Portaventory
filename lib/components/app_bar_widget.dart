@@ -18,17 +18,12 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: LayoutBuilder(
         builder: (context, constraints) => title.isEmpty
-            ? Column(
-                children: [
-                  // Image.asset(
-                  //   Assets.images.logo.path,
-                  //   width: constraints.maxWidth * 0.60,
-                  //   fit: BoxFit.contain,
-                  // ),
-                ],
+            ? const SizedBox(
+                key: Key('AppBarTitleEmpty'),
               )
             : Text(
                 title,
+                key: const Key('AppBarTitle'),
               ),
       ),
       leading: overrideBackButton,
