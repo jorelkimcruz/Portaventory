@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
-import 'package:portaventory/entity/item/item.dart';
-import 'package:portaventory/pages/add_item/add_item_view_binding.dart';
-import 'package:portaventory/pages/home/home_view_controller.dart';
-import 'package:portaventory/pages/qr_code_view/qr_code_view_binding.dart';
-import 'package:portaventory/pages/routes/app_pages.dart';
-import 'package:portaventory/pages/storage/storage_view_binding.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:portaventory/pages/storage/storage_view_controller.dart';
+import '../../entity/item/item.dart';
 import '../../helpers/exported_packages.dart';
+import '../add_item/add_item_view_binding.dart';
+import '../routes/app_pages.dart';
 
-class HomeView extends GetView<HomeViewController> {
-  const HomeView({Key? key}) : super(key: key);
+class StorageView extends GetView<StorageViewController> {
+  const StorageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     controller;
     return Scaffold(
       appBar: AppBarWidget(
-        title: 'Portaventory',
+        title: controller.storage.name!,
         actions: [
           IconButton(
             onPressed: () async {
               final result = await Get.toNamed(Routes.addItem,
-                  arguments: AddItemArguments(database: controller.database));
+                  arguments: AddItemArguments(
+                    database: controller.database,
+                    storage: controller.storage,
+                  ));
               if (result == 'success') {
                 MotionToast.success(
                         description: const Text("Item Added!"), width: 300)
@@ -38,13 +38,17 @@ class HomeView extends GetView<HomeViewController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          // QrImage(
+          //   data: 'This is a simple QR code',
+          //   version: QrVersions.auto,
+          //   size: 320,
+          //   gapless: false,
+          // ),
           Expanded(
             child: Obx(() {
               return Scrollbar(
                 child: ListView.separated(
                     itemBuilder: (cntx, index) {
-                      final qrData =
-                          "${controller.items[index].id}-${controller.items[index].name}";
                       return Dismissible(
                         key: UniqueKey(),
                         child: ListTile(
@@ -55,28 +59,7 @@ class HomeView extends GetView<HomeViewController> {
                               controller.items[index].type == ItemType.storage
                                   ? const Icon(Icons.inventory_2)
                                   : const SizedBox(),
-                          leading: InkWell(
-                              onTap: () {
-                                Get.toNamed(Routes.qrCode,
-                                    arguments: QRCodeViewArguments(qrData));
-                              },
-                              child: QrImage(
-                                data: qrData,
-                                version: QrVersions.auto,
-                                gapless: true,
-                                foregroundColor: Colors.white,
-                              )),
-                          onTap: () {
-                            if (controller.items[index].type ==
-                                ItemType.storage) {
-                              Get.toNamed(Routes.storage,
-                                  arguments: StorageViewArguments(
-                                    controller.items[index],
-                                    controller.database,
-                                    controller.storeRef,
-                                  ));
-                            }
-                          },
+                          onTap: () {},
                         ),
                         onDismissed: (_) async {
                           await controller.removeItem(controller.items[index]);
@@ -98,14 +81,6 @@ class HomeView extends GetView<HomeViewController> {
                     itemCount: controller.items.length),
               );
             }),
-          ),
-          TextButton(
-            onPressed: () async {
-              Get.toNamed(
-                Routes.scanner,
-              );
-            },
-            child: const Text('SCAN QR CODE'),
           ),
         ],
       ),

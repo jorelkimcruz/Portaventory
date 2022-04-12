@@ -53,6 +53,12 @@ class Item {
           .toList();
     }
   }
+
+  List<Item> mapChanges(List<RecordChange<int, Map<String, Object?>>> changes) {
+    return changes
+        .map((e) => Item.fromMap(e.ref.key, e.newSnapshot!.value))
+        .toList();
+  }
 }
 
 enum ItemType {

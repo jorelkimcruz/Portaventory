@@ -28,6 +28,7 @@ dependencies:
   get: null
   motion_toast:
   path_provider:
+  printing:
   qr_code_scanner:
   qr_flutter:
   sembast:

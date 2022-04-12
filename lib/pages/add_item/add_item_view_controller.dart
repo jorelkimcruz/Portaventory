@@ -3,9 +3,10 @@ import 'package:portaventory/entity/item/item.dart';
 import 'package:portaventory/helpers/exported_packages.dart';
 
 class AddItemViewController extends GetxController with StateMixin {
-  AddItemViewController({required this.database});
+  AddItemViewController({required this.database, this.storage});
 
   final Database database;
+  final Item? storage;
 
   final RxString type = 'Item'.obs;
   final TextEditingController name = TextEditingController();
@@ -22,7 +23,16 @@ class AddItemViewController extends GetxController with StateMixin {
     item.description = description.text;
 
     try {
-      await insert(item);
+      if (storage == null) {
+        await insert(item);
+      } else {
+        if (storage!.children == null) {
+          storage!.children = [];
+        }
+        storage!.children!.add(item);
+        await updateExisting(item);
+      }
+
       return;
     } catch (error) {
       print('ERROR $error');
@@ -41,5 +51,13 @@ class AddItemViewController extends GetxController with StateMixin {
     } else {
       throw 'Name already exists!';
     }
+  }
+
+  Future<Item> updateExisting(Item item) async {
+    // Store some objects
+    final _storeRef = intMapStoreFactory.store();
+    final _ =
+        await _storeRef.record(storage!.id!).update(database, storage!.toMap());
+    return item;
   }
 }

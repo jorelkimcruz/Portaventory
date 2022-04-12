@@ -3,11 +3,15 @@ import 'package:portaventory/helpers/exported_packages.dart';
 import 'package:portaventory/pages/add_item/add_item_view.dart';
 import 'package:portaventory/pages/add_item/add_item_view_binding.dart';
 import 'package:portaventory/pages/home/home_view_binding.dart';
+import 'package:portaventory/pages/qr_code_view/qr_code_view.dart';
+import 'package:portaventory/pages/qr_code_view/qr_code_view_binding.dart';
 import 'package:portaventory/pages/scanner/scanner_view.dart';
 import 'package:portaventory/pages/scanner/scanner_view_binding.dart';
 import 'package:portaventory/pages/splashscreen/splashscreen_view.dart';
 import 'package:portaventory/pages/splashscreen/splashscreen_view_binding.dart';
+import 'package:portaventory/pages/storage/storage_view_binding.dart';
 import '../home/home_view.dart';
+import '../storage/storage_view.dart';
 part 'app_routes.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -27,6 +31,11 @@ class AppPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: Routes.qrCode,
+      binding: QRCodeViewBinding(),
+      page: () => const QRCodeView(),
+    ),
+    GetPage(
       name: Routes.scanner,
       binding: ScannerViewBinding(),
       page: () => const ScannerView(),
@@ -35,6 +44,11 @@ class AppPages {
       name: Routes.addItem,
       binding: AddItemViewBinding(),
       page: () => const AddItemView(),
+    ),
+    GetPage(
+      name: Routes.storage,
+      binding: StorageViewBinding(),
+      page: () => const StorageView(),
     ),
   ];
 }
