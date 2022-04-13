@@ -58,13 +58,18 @@ class HomeView extends GetView<HomeViewController> {
                           leading: InkWell(
                               onTap: () {
                                 Get.toNamed(Routes.qrCode,
-                                    arguments: QRCodeViewArguments(qrData));
+                                    arguments: QRCodeViewArguments(
+                                        qrdata: qrData,
+                                        item: controller.items[index]));
                               },
                               child: QrImage(
                                 data: qrData,
                                 version: QrVersions.auto,
                                 gapless: true,
-                                foregroundColor: Colors.white,
+                                foregroundColor: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .color,
                               )),
                           onTap: () {
                             if (controller.items[index].type ==

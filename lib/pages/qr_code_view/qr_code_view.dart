@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:portaventory/gen/assets.gen.dart';
 import 'package:portaventory/pages/qr_code_view/qr_code_view_controller.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../helpers/exported_packages.dart';
@@ -16,37 +12,48 @@ class QRCodeView extends GetView<QRCodeViewController> {
   Widget build(BuildContext context) {
     controller;
     return Scaffold(
-        appBar: const AppBarWidget(
-          title: 'QR Code',
-          actions: [],
+        appBar: AppBarWidget(
+          title: controller.item.name ?? 'QR Code',
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             QrImage(
               data: controller.qrdata,
               version: QrVersions.auto,
               gapless: true,
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).textTheme.bodyMedium!.color,
             ),
-            TextButton(
-                onPressed: () async {
-                  final painter = QrPainter.withQr(
-                    qr: qrCode,
-                    color: const Color(0xFF000000),
-                    gapless: true,
-                    embeddedImageStyle: null,
-                    embeddedImage: null,
-                  );
-                  final doc = pw.Document();
-                  final image = await imageFromAssetBundle('assets/image.png');
+            TextButton.icon(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green)),
+              onPressed: () async {
+                final image = await QrPainter(
+                  data: controller.qrdata,
+                  version: QrVersions.auto,
+                  gapless: false,
+                ).toImageData(200);
+                final imagemem = MemoryImage(image!.buffer.asUint8List());
+                final doc = pw.Document();
+                final sd = await flutterImageProvider(imagemem);
 
-                  doc.addPage(pw.Page(build: (pw.Context context) {
-                    return pw.Center(
-                      child: pw.Image(image),
-                    ); // Center
-                  })); //
-                },
-                child: const Text('Print QR Code'))
+                doc.addPage(pw.Page(build: (pw.Context context) {
+                  return pw.Center(
+                      child: pw.Column(
+                          mainAxisAlignment: pw.MainAxisAlignment.center,
+                          children: [
+                        pw.Image(sd),
+                        pw.Text(controller.item.name!,
+                            style: const pw.TextStyle(fontSize: 30)),
+                      ]));
+                }));
+                await Printing.layoutPdf(
+                    onLayout: (format) async => doc.save());
+              },
+              label: const Text('Print QR Code'),
+              icon: const Icon(Icons.print),
+            )
           ],
         ));
   }
