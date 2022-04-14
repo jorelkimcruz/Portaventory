@@ -9,8 +9,12 @@ class ScannerViewController extends GetxController with StateMixin {
 
   void onQRViewCreated(QRViewController controller) {
     qrController = controller;
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       result = scanData;
+      final scannedcode = result!.code!;
+      if (scannedcode.contains(portaventory)) {
+        Get.back(result: result!.code);
+      }
     });
   }
 }

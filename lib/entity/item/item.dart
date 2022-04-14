@@ -1,7 +1,7 @@
 import 'package:sembast/sembast.dart';
 
 class Item {
-  int? id;
+  String? id;
   ItemType? type;
   String? name;
   String? description;
@@ -39,7 +39,7 @@ class Item {
     return map;
   }
 
-  Item.fromMap(int key, Map<String, Object?> change) {
+  Item.fromMap(String key, Map<String, Object?> change) {
     final map = change;
     id = key;
     type = ItemType.values.firstWhere(
@@ -54,7 +54,8 @@ class Item {
     }
   }
 
-  List<Item> mapChanges(List<RecordChange<int, Map<String, Object?>>> changes) {
+  List<Item> mapChanges(
+      List<RecordChange<String, Map<String, Object?>>> changes) {
     return changes
         .map((e) => Item.fromMap(e.ref.key, e.newSnapshot!.value))
         .toList();

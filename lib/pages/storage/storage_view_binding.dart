@@ -18,5 +18,5 @@ class StorageViewArguments {
   StorageViewArguments(this.storage, this.database, this.store);
   final Item storage;
   final Database database;
-  final StoreRef<int, Map<String, Object?>> store;
+  final StoreRef<String, Map<String, Object?>> store;
 }

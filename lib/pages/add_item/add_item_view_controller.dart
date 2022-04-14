@@ -55,7 +55,7 @@ class AddItemViewController extends GetxController with StateMixin {
 
   Future<Item> updateExisting(Item item) async {
     // Store some objects
-    final _storeRef = intMapStoreFactory.store();
+    final _storeRef = stringMapStoreFactory.store();
     final _ =
         await _storeRef.record(storage!.id!).update(database, storage!.toMap());
     return item;

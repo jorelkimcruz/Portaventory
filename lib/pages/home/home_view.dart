@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:portaventory/entity/item/item.dart';
 import 'package:portaventory/pages/add_item/add_item_view_binding.dart';
@@ -44,7 +45,7 @@ class HomeView extends GetView<HomeViewController> {
                 child: ListView.separated(
                     itemBuilder: (cntx, index) {
                       final qrData =
-                          "${controller.items[index].id}-${controller.items[index].name}";
+                          "$portaventory-\$${controller.items[index].id}\$${controller.items[index].name}";
                       return Dismissible(
                         key: UniqueKey(),
                         child: ListTile(
@@ -106,9 +107,28 @@ class HomeView extends GetView<HomeViewController> {
           ),
           TextButton(
             onPressed: () async {
-              Get.toNamed(
+              final result = await Get.toNamed(
                 Routes.scanner,
               );
+              try {
+                final item = controller.findScannedQR(result);
+                EasyLoading.show(status: "Loading storage");
+                Future.delayed(
+                  const Duration(milliseconds: 500),
+                  () {
+                    EasyLoading.dismiss();
+                    Get.toNamed(Routes.storage,
+                        arguments: StorageViewArguments(
+                          item,
+                          controller.database,
+                          controller.storeRef,
+                        ));
+                  },
+                );
+              } catch (error) {
+                MotionToast.error(description: Text(error.toString()))
+                    .show(context);
+              }
             },
             child: const Text('SCAN QR CODE'),
           ),

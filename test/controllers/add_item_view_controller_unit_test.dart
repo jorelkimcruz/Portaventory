@@ -89,19 +89,19 @@ void main() {
     test('then it should save to db', () async {
       expect(Get.isPrepared<HomeViewController>(), false);
       final item = Item();
-      item.id = 1;
+      item.id = "1";
       item.description = 'description1';
       item.name = 'name1';
       item.type = ItemType.storage;
       item.children = [
         Item(
-          id: 01,
+          id: "01",
           name: 'name01',
           description: 'description01',
           type: ItemType.storage,
         ),
         Item(
-          id: 02,
+          id: "02",
           name: 'name02',
           description: 'description02',
           type: ItemType.storage,
@@ -168,19 +168,19 @@ void main() {
       expect(records, isEmpty);
 
       final item = Item();
-      item.id = 1;
+      item.id = "1";
       item.description = 'description1';
       item.name = 'name1';
       item.type = ItemType.storage;
       item.children = [
         Item(
-          id: 01,
+          id: "01",
           name: 'name01',
           description: 'description01',
           type: ItemType.storage,
         ),
         Item(
-          id: 02,
+          id: "02",
           name: 'name02',
           description: 'description02',
           type: ItemType.storage,

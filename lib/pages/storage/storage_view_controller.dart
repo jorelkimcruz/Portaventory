@@ -7,7 +7,7 @@ class StorageViewController extends GetxController with StateMixin {
 
   final Item storage;
   final Database database;
-  final StoreRef<int, Map<String, Object?>> store;
+  final StoreRef<String, Map<String, Object?>> store;
   late RxList<Item> items;
 
   @override
@@ -17,7 +17,7 @@ class StorageViewController extends GetxController with StateMixin {
       for (var change in changes) {
         if (change.isUpdate) {
           final updateItem = Item.fromMap(
-              int.parse("${change.ref.key}${items.length + 1}"),
+              "${change.ref.key}${items.length + 1}",
               change.newSnapshot!.value);
           items.value = updateItem.children!;
         }
@@ -27,14 +27,15 @@ class StorageViewController extends GetxController with StateMixin {
     super.onInit();
   }
 
-  Future<int?> removeItem(Item item) async {
+  Future<String?> removeItem(Item item) async {
     items.removeWhere((element) => element == item);
     storage.children = items;
     final _ = await store.record(storage.id!).update(database, storage.toMap());
     return item.id;
   }
 
-  List<Item> mapChanges(List<RecordChange<int, Map<String, Object?>>> changes) {
+  List<Item> mapChanges(
+      List<RecordChange<String, Map<String, Object?>>> changes) {
     return changes
         .map((e) => Item.fromMap(e.ref.key, e.newSnapshot!.value))
         .toList();

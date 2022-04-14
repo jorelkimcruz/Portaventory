@@ -5,7 +5,7 @@ import '../../entity/item/item.dart';
 class HomeViewController extends GetxController with StateMixin {
   HomeViewController({required this.storeRef, required this.database});
 
-  StoreRef<int, Map<String, Object?>> storeRef;
+  StoreRef<String, Map<String, Object?>> storeRef;
   Database database;
 
   RxList<Item> items = RxList<Item>([]);
@@ -40,24 +40,39 @@ class HomeViewController extends GetxController with StateMixin {
     super.onClose();
   }
 
-  Future<int?> removeItem(Item item) async {
+  Item findScannedQR(dynamic result) {
+    final arArray = result.split("\$");
+    final signature = arArray[0].toString().replaceAll('-', "");
+    final id = arArray[1].toString();
+    final name = arArray[2];
+
+    return items.firstWhere(
+      (element) =>
+          signature == portaventory && element.id == id && element.name == name,
+      orElse: () => throw 'No Storage found',
+    );
+  }
+
+  Future<String?> removeItem(Item item) async {
     return storeRef.record(item.id!).delete(database);
   }
 
-  List<Item> mapChanges(List<RecordChange<int, Map<String, Object?>>> changes) {
+  List<Item> mapChanges(
+      List<RecordChange<String, Map<String, Object?>>> changes) {
     return changes
         .map((e) => Item.fromMap(e.ref.key, e.newSnapshot!.value))
         .toList();
   }
 
   List<Item> mapItems(
-      List<RecordSnapshot<int, Map<String, Object?>>> snapshot) {
+      List<RecordSnapshot<String, Map<String, Object?>>> snapshot) {
     return snapshot.isNotEmpty
         ? snapshot.map((e) => Item.fromMap(e.ref.key, e.value)).toList()
         : [];
   }
 
-  Future<List<RecordSnapshot<int, Map<String, Object?>>>> fetchItems() async {
+  Future<List<RecordSnapshot<String, Map<String, Object?>>>>
+      fetchItems() async {
     return storeRef.find(database, finder: Finder());
   }
 }

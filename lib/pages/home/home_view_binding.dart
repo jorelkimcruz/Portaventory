@@ -16,5 +16,5 @@ class HomeViewBindingArguments {
   HomeViewBindingArguments(this.database, this.storeRef);
 
   final Database database;
-  final StoreRef<int, Map<String, Object?>> storeRef;
+  final StoreRef<String, Map<String, Object?>> storeRef;
 }

@@ -18,7 +18,7 @@ class SplashScreenViewsController extends GetxController with StateMixin {
     DatabaseFactory dbFactory = databaseFactoryIo;
 
     final database = await dbFactory.openDatabase(dbPath);
-    final storeRef = intMapStoreFactory.store();
+    final storeRef = stringMapStoreFactory.store();
     Future.delayed(const Duration(milliseconds: 1000), () {
       Get.offAndToNamed(Routes.home,
           arguments: HomeViewBindingArguments(database, storeRef));
