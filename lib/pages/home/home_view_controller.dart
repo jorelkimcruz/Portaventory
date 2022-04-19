@@ -41,7 +41,6 @@ class HomeViewController extends GetxController with StateMixin {
   }
 
   Item findScannedQR(dynamic result) {
-    print('==AAAA===> $result');
     final arArray = result.split("\$");
     final signature = arArray[0].toString().replaceAll('XX', "");
     final id = arArray[1].toString();

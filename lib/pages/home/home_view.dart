@@ -35,6 +35,34 @@ class HomeView extends GetView<HomeViewController> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.camera_alt_rounded),
+          onPressed: () async {
+            final result = await Get.toNamed(
+              Routes.scanner,
+            );
+            try {
+              if (result != null) {
+                final item = controller.findScannedQR(result);
+                EasyLoading.show(status: "Loading storage");
+                Future.delayed(
+                  const Duration(milliseconds: 1000),
+                  () {
+                    EasyLoading.dismiss();
+                    Get.toNamed(Routes.storage,
+                        arguments: StorageViewArguments(
+                          item,
+                          controller.database,
+                          controller.storeRef,
+                        ));
+                  },
+                );
+              }
+            } catch (error) {
+              MotionToast.error(description: Text(error.toString()))
+                  .show(context);
+            }
+          }),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -104,35 +132,6 @@ class HomeView extends GetView<HomeViewController> {
                     itemCount: controller.items.length),
               );
             }),
-          ),
-          TextButton(
-            onPressed: () async {
-              final result = await Get.toNamed(
-                Routes.scanner,
-              );
-              try {
-                if (result != null) {
-                  final item = controller.findScannedQR(result);
-                  EasyLoading.show(status: "Loading storage");
-                  Future.delayed(
-                    const Duration(milliseconds: 500),
-                    () {
-                      EasyLoading.dismiss();
-                      Get.toNamed(Routes.storage,
-                          arguments: StorageViewArguments(
-                            item,
-                            controller.database,
-                            controller.storeRef,
-                          ));
-                    },
-                  );
-                }
-              } catch (error) {
-                MotionToast.error(description: Text(error.toString()))
-                    .show(context);
-              }
-            },
-            child: const Text('SCAN QR CODE'),
           ),
         ],
       ),
