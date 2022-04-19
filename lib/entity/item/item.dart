@@ -1,7 +1,10 @@
 import 'package:sembast/sembast.dart';
 
 class Item {
+  /// ID value will always come from sembast storage
+  ///
   String? id;
+
   ItemType? type;
   String? name;
   String? description;

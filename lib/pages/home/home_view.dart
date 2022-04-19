@@ -45,7 +45,7 @@ class HomeView extends GetView<HomeViewController> {
                 child: ListView.separated(
                     itemBuilder: (cntx, index) {
                       final qrData =
-                          "$portaventory-\$${controller.items[index].id}\$${controller.items[index].name}";
+                          controller.uniqueQRData(controller.items[index]);
                       return Dismissible(
                         key: UniqueKey(),
                         child: ListTile(
@@ -111,20 +111,22 @@ class HomeView extends GetView<HomeViewController> {
                 Routes.scanner,
               );
               try {
-                final item = controller.findScannedQR(result);
-                EasyLoading.show(status: "Loading storage");
-                Future.delayed(
-                  const Duration(milliseconds: 500),
-                  () {
-                    EasyLoading.dismiss();
-                    Get.toNamed(Routes.storage,
-                        arguments: StorageViewArguments(
-                          item,
-                          controller.database,
-                          controller.storeRef,
-                        ));
-                  },
-                );
+                if (result != null) {
+                  final item = controller.findScannedQR(result);
+                  EasyLoading.show(status: "Loading storage");
+                  Future.delayed(
+                    const Duration(milliseconds: 500),
+                    () {
+                      EasyLoading.dismiss();
+                      Get.toNamed(Routes.storage,
+                          arguments: StorageViewArguments(
+                            item,
+                            controller.database,
+                            controller.storeRef,
+                          ));
+                    },
+                  );
+                }
               } catch (error) {
                 MotionToast.error(description: Text(error.toString()))
                     .show(context);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:portaventory/components/form_fields/textfield.dart';
+import 'package:portaventory/entity/item/item.dart';
 import 'package:portaventory/pages/add_item/add_item_view_controller.dart';
 import '../../helpers/exported_packages.dart';
 
@@ -29,11 +30,13 @@ class AddItemView extends GetView<AddItemViewController> {
                   onChanged: (String? newValue) {
                     controller.type.value = newValue!;
                   },
-                  items: <String>['Item', 'Storage']
+                  items: ItemType.values
+                      .map((e) => e.name)
+                      .toList()
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(value.capitalizeFirst!),
                     );
                   }).toList(),
                 ),

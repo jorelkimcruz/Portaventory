@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:portaventory/pages/add_item/add_item_view_controller.dart';
 import 'package:sembast/sembast.dart';
+import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ void main() {
     Get.reset();
   });
 
-  StoreRef<int, Map<String, Object?>>? store;
+  StoreRef<String, Map<String, Object?>>? store;
   Database? db;
 
   BindingsBuilder binding(List<Item> items) {
@@ -26,7 +27,7 @@ void main() {
       var factory = newDatabaseFactoryMemory();
       // Define the store
       // store = StoreRef<int, Map<String, Object?>>.main();
-      store = intMapStoreFactory.store();
+      store = stringMapStoreFactory.store();
 
       // Open the database
       db = await factory.openDatabase('test.db');

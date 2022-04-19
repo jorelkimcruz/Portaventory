@@ -22,7 +22,7 @@ void main() {
   BindingsBuilder binding(List<Item> items) {
     return BindingsBuilder(() async {
       // In memory factory for unit test
-      var factory = databaseFactoryMemory;
+      var factory = newDatabaseFactoryMemory();
       // Define the store
       // store =
       store = StoreRef<String, Map<String, Object?>>.main();
@@ -42,52 +42,52 @@ void main() {
     });
   }
 
-  // test('pre-test sembast initialization', () async {
-  //   // In memory factory for unit test
-  //   var factory = databaseFactoryMemory;
+  test('pre-test sembast initialization', () async {
+    // In memory factory for unit test
+    var factory = databaseFactoryMemory;
 
-  //   // Define the store
-  //   var store2 = StoreRef<int, Map<String, Object?>>.main();
-  //   // Define the record
+    // Define the store
+    var store2 = StoreRef<int, Map<String, Object?>>.main();
+    // Define the record
 
-  //   // Open the database
-  //   var db2 = await factory.openDatabase('test.db');
+    // Open the database
+    var db2 = await factory.openDatabase('test.db');
 
-  //   // Write a record
+    // Write a record
 
-  //   final item = Item();
-  //   item.description = 'description1';
-  //   item.name = 'name1';
-  //   item.type = ItemType.storage;
-  //   item.children = [
-  //     Item(
-  //       id: "01",
-  //       name: 'name01',
-  //       description: 'description01',
-  //       type: ItemType.storage,
-  //     ),
-  //     Item(
-  //       id: "02",
-  //       name: 'name02',
-  //       description: 'description02',
-  //       type: ItemType.storage,
-  //     )
-  //   ];
+    final item = Item();
+    item.description = 'description1';
+    item.name = 'name1';
+    item.type = ItemType.storage;
+    item.children = [
+      Item(
+        id: "01",
+        name: 'name01',
+        description: 'description01',
+        type: ItemType.storage,
+      ),
+      Item(
+        id: "02",
+        name: 'name02',
+        description: 'description02',
+        type: ItemType.storage,
+      )
+    ];
 
-  //   await store2.add(db2, item.toMap());
+    await store2.add(db2, item.toMap());
 
-  //   expect(
-  //       await store2.find(
-  //         db2,
-  //       ),
-  //       isNotEmpty);
-  //   final list = await store2.find(
-  //     db2,
-  //   );
-  //   expect(list.length, 1);
-  //   // Close the database
-  //   await db2.close();
-  // });
+    expect(
+        await store2.find(
+          db2,
+        ),
+        isNotEmpty);
+    final list = await store2.find(
+      db2,
+    );
+    expect(list.length, 1);
+    // Close the database
+    await db2.close();
+  });
   group('Given that db has an empty items', () {
     test('then it should return an empty list', () async {
       expect(Get.isPrepared<HomeViewController>(), false);
@@ -193,7 +193,7 @@ void main() {
       if (controller.status.isError) {
         expect(controller.state, null);
       }
-      print(controller.items);
+
       expect(controller.items.isEmpty, true);
 
       final item = Item();
@@ -220,193 +220,347 @@ void main() {
       expect(controller.items.isNotEmpty, true);
     });
   });
-  // group('Given that db has a single item', () {
-  //   test('then it should return one item', () async {
-  //     expect(Get.isPrepared<HomeViewController>(), false);
+  group('Given that db has a single item', () {
+    test('then it should return one item', () async {
+      expect(Get.isPrepared<HomeViewController>(), false);
 
-  //     final item = Item();
-  //     item.id = "0";
-  //     item.description = 'description1';
-  //     item.name = 'name1';
-  //     item.type = ItemType.storage;
-  //     item.children = [
-  //       Item(
-  //         id: "01",
-  //         name: 'name01',
-  //         description: 'description01',
-  //         type: ItemType.storage,
-  //       ),
-  //       Item(
-  //         id: "02",
-  //         name: 'name02',
-  //         description: 'description02',
-  //         type: ItemType.storage,
-  //       )
-  //     ];
-  //     binding([item]).builder();
+      final item = Item();
+      item.id = "0";
+      item.description = 'description1';
+      item.name = 'name1';
+      item.type = ItemType.storage;
+      item.children = [
+        Item(
+          id: "01",
+          name: 'name01',
+          description: 'description01',
+          type: ItemType.storage,
+        ),
+        Item(
+          id: "02",
+          name: 'name02',
+          description: 'description02',
+          type: ItemType.storage,
+        )
+      ];
+      binding([item]).builder();
 
-  //     // await for db to initialize
-  //     await Future.delayed(const Duration(milliseconds: 100));
+      // await for db to initialize
+      await Future.delayed(const Duration(milliseconds: 100));
 
-  //     /// recover your controller
-  //     final controller = Get.find<HomeViewController>();
+      /// recover your controller
+      final controller = Get.find<HomeViewController>();
 
-  //     /// check if onInit was called
-  //     expect(controller.initialized, true);
+      /// check if onInit was called
+      expect(controller.initialized, true);
 
-  //     /// check initial Status
-  //     expect(controller.status.isLoading, true);
+      /// check initial Status
+      expect(controller.status.isLoading, true);
 
-  //     /// await time request
-  //     await Future.delayed(const Duration(milliseconds: 100));
+      /// await time request
+      await Future.delayed(const Duration(milliseconds: 100));
 
-  //     if (controller.status.isError) {
-  //       expect(controller.state, null);
-  //     }
+      if (controller.status.isError) {
+        expect(controller.state, null);
+      }
 
-  //     expect(controller.items.length, 1);
-  //   });
-  // });
+      expect(controller.items.length, 1);
+    });
+  });
 
-  // group('Given that db has multiple items', () {
-  //   test('then it should return multiple items', () async {
-  //     expect(Get.isPrepared<HomeViewController>(), false);
+  group('Given that db has multiple items', () {
+    test('then it should return multiple items', () async {
+      expect(Get.isPrepared<HomeViewController>(), false);
 
-  //     final item = Item();
-  //     item.id = "0";
-  //     item.description = 'description1';
-  //     item.name = 'name1';
-  //     item.type = ItemType.storage;
-  //     item.children = [
-  //       Item(
-  //         id: "01",
-  //         name: 'name01',
-  //         description: 'description01',
-  //         type: ItemType.storage,
-  //       ),
-  //       Item(
-  //         id: "02",
-  //         name: 'name02',
-  //         description: 'description02',
-  //         type: ItemType.storage,
-  //       )
-  //     ];
+      final item = Item();
+      item.id = "0";
+      item.description = 'description1';
+      item.name = 'name1';
+      item.type = ItemType.storage;
+      item.children = [
+        Item(
+          id: "01",
+          name: 'name01',
+          description: 'description01',
+          type: ItemType.storage,
+        ),
+        Item(
+          id: "02",
+          name: 'name02',
+          description: 'description02',
+          type: ItemType.storage,
+        )
+      ];
 
-  //     final item2 = Item();
-  //     item2.id = "0";
-  //     item2.description = 'description1';
-  //     item2.name = 'name1';
-  //     item2.type = ItemType.storage;
-  //     item2.children = [
-  //       Item(
-  //         id: "01",
-  //         name: 'name01',
-  //         description: 'description01',
-  //         type: ItemType.storage,
-  //       ),
-  //       Item(
-  //         id: "02",
-  //         name: 'name02',
-  //         description: 'description02',
-  //         type: ItemType.storage,
-  //       )
-  //     ];
-  //     binding([item, item2]).builder();
+      final item2 = Item();
+      item2.id = "0";
+      item2.description = 'description1';
+      item2.name = 'name1';
+      item2.type = ItemType.storage;
+      item2.children = [
+        Item(
+          id: "01",
+          name: 'name01',
+          description: 'description01',
+          type: ItemType.storage,
+        ),
+        Item(
+          id: "02",
+          name: 'name02',
+          description: 'description02',
+          type: ItemType.storage,
+        )
+      ];
+      binding([item, item2]).builder();
 
-  //     // await for db to initialize
-  //     await Future.delayed(const Duration(milliseconds: 100));
+      // await for db to initialize
+      await Future.delayed(const Duration(milliseconds: 100));
 
-  //     /// recover your controller
-  //     final controller = Get.find<HomeViewController>();
+      /// recover your controller
+      final controller = Get.find<HomeViewController>();
 
-  //     /// check if onInit was called
-  //     expect(controller.initialized, true);
+      /// check if onInit was called
+      expect(controller.initialized, true);
 
-  //     /// check initial Status
-  //     expect(controller.status.isLoading, true);
+      /// check initial Status
+      expect(controller.status.isLoading, true);
 
-  //     /// await time request
-  //     await Future.delayed(const Duration(milliseconds: 100));
+      /// await time request
+      await Future.delayed(const Duration(milliseconds: 100));
 
-  //     if (controller.status.isError) {
-  //       expect(controller.state, null);
-  //     }
+      if (controller.status.isError) {
+        expect(controller.state, null);
+      }
 
-  //     expect(controller.items.length, 2);
-  //   });
+      expect(controller.items.length, 2);
+    });
 
-  //   group('Given that a user removed an item to db', () {
-  //     test('then it should reflect change to list items', () async {
-  //       disableSembastCooperator();
-  //       expect(Get.isPrepared<HomeViewController>(), false);
+    group('Given that a user removed an item to db', () {
+      test('then it should reflect change to list items', () async {
+        disableSembastCooperator();
+        expect(Get.isPrepared<HomeViewController>(), false);
 
-  //       final item = Item();
-  //       item.id = "1";
-  //       item.description = 'description1';
-  //       item.name = 'name1';
-  //       item.type = ItemType.storage;
-  //       item.children = [
-  //         Item(
-  //           id: "01",
-  //           name: 'name01',
-  //           description: 'description01',
-  //           type: ItemType.storage,
-  //         ),
-  //         Item(
-  //           id: "02",
-  //           name: 'name02',
-  //           description: 'description02',
-  //           type: ItemType.storage,
-  //         )
-  //       ];
+        final item = Item();
 
-  //       final item2 = Item();
-  //       item2.id = "2";
-  //       item2.description = 'description11';
-  //       item2.name = 'name11';
-  //       item2.type = ItemType.storage;
-  //       item2.children = [
-  //         Item(
-  //           id: "01",
-  //           name: 'name011',
-  //           description: 'description011',
-  //           type: ItemType.storage,
-  //         ),
-  //         Item(
-  //           id: "02",
-  //           name: 'name012',
-  //           description: 'description02',
-  //           type: ItemType.storage,
-  //         )
-  //       ];
-  //       binding([item, item2]).builder();
+        item.description = 'description1';
+        item.name = 'name1';
+        item.type = ItemType.storage;
+        item.children = [
+          Item(
+            id: "01",
+            name: 'name01',
+            description: 'description01',
+            type: ItemType.storage,
+          ),
+          Item(
+            id: "02",
+            name: 'name02',
+            description: 'description02',
+            type: ItemType.storage,
+          )
+        ];
 
-  //       // await for db to initialize
-  //       await Future.delayed(const Duration(milliseconds: 100));
+        final item2 = Item();
+        item2.description = 'description11';
+        item2.name = 'name11';
+        item2.type = ItemType.storage;
+        item2.children = [
+          Item(
+            id: "01",
+            name: 'name011',
+            description: 'description011',
+            type: ItemType.storage,
+          ),
+          Item(
+            id: "02",
+            name: 'name012',
+            description: 'description02',
+            type: ItemType.storage,
+          )
+        ];
+        binding([item, item2]).builder();
 
-  //       /// recover your controller
-  //       final controller = Get.find<HomeViewController>();
+        // await for db to initialize
+        await Future.delayed(const Duration(milliseconds: 100));
 
-  //       /// check if onInit was called
-  //       expect(controller.initialized, true);
+        /// recover your controller
+        final controller = Get.find<HomeViewController>();
 
-  //       /// check initial Status
-  //       expect(controller.status.isLoading, true);
+        /// check if onInit was called
+        expect(controller.initialized, true);
 
-  //       /// await time request
-  //       await Future.delayed(const Duration(milliseconds: 100));
+        /// check initial Status
+        expect(controller.status.isLoading, true);
 
-  //       if (controller.status.isError) {
-  //         expect(controller.state, null);
-  //       }
+        /// await time request
+        await Future.delayed(const Duration(milliseconds: 100));
 
-  //       expect(controller.items.length, 2);
+        if (controller.status.isError) {
+          expect(controller.state, null);
+        }
 
-  //       final deleted = await controller.removeItem(item);
+        expect(controller.items.length, 2);
 
-  //       expect(deleted, 1);
-  //       expect(controller.items.length, 1);
-  //     });
-  //   });
-  // });
+        final deleted = await controller.removeItem(controller.items.first);
+
+        expect(deleted, isNotNull);
+        expect(controller.items.length, 1);
+      });
+    });
+
+    group('Given that a user scanned a QR Code', () {
+      test('then it should find qr code data to storage', () async {
+        expect(Get.isPrepared<HomeViewController>(), false);
+
+        final item = Item();
+        item.id = "0";
+        item.description = 'description1';
+        item.name = 'name1';
+        item.type = ItemType.storage;
+        item.children = [
+          Item(
+            id: "01",
+            name: 'name01',
+            description: 'description01',
+            type: ItemType.storage,
+          ),
+          Item(
+            id: "02",
+            name: 'name02',
+            description: 'description02',
+            type: ItemType.storage,
+          )
+        ];
+
+        final item2 = Item();
+        item2.id = "0";
+        item2.description = 'description1';
+        item2.name = 'name1';
+        item2.type = ItemType.storage;
+        item2.children = [
+          Item(
+            id: "01",
+            name: 'name01',
+            description: 'description01',
+            type: ItemType.storage,
+          ),
+          Item(
+            id: "02",
+            name: 'name02',
+            description: 'description02',
+            type: ItemType.storage,
+          )
+        ];
+        binding([item, item2]).builder();
+
+        // await for db to initialize
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        /// recover your controller
+        final controller = Get.find<HomeViewController>();
+
+        /// check if onInit was called
+        expect(controller.initialized, true);
+
+        /// check initial Status
+        expect(controller.status.isLoading, true);
+
+        /// await time request
+        await Future.delayed(const Duration(milliseconds: 100));
+
+        if (controller.status.isError) {
+          expect(controller.state, null);
+        }
+
+        expect(controller.items.length, 2);
+
+        final dynamic scannedResult =
+            controller.uniqueQRData(controller.items[0]);
+        final scanResult = controller.findScannedQR(scannedResult);
+
+        expect(scanResult.id, isNotNull);
+        expect(scanResult.id, controller.items[0].id);
+      });
+
+      group('But item not found', () {
+        test('then it should throw no storage found', () async {
+          expect(Get.isPrepared<HomeViewController>(), false);
+
+          final item = Item();
+          item.description = 'description1';
+          item.name = 'name1';
+          item.type = ItemType.storage;
+          item.children = [
+            Item(
+              id: "01",
+              name: 'name01',
+              description: 'description01',
+              type: ItemType.storage,
+            ),
+            Item(
+              id: "02",
+              name: 'name02',
+              description: 'description02',
+              type: ItemType.storage,
+            )
+          ];
+
+          final item2 = Item();
+          item2.description = 'description1';
+          item2.name = 'name1';
+          item2.type = ItemType.storage;
+          item2.children = [
+            Item(
+              id: "01",
+              name: 'name01',
+              description: 'description01',
+              type: ItemType.storage,
+            ),
+            Item(
+              id: "02",
+              name: 'name02',
+              description: 'description02',
+              type: ItemType.storage,
+            )
+          ];
+          binding([item, item2]).builder();
+
+          // await for db to initialize
+          await Future.delayed(const Duration(milliseconds: 100));
+
+          /// recover your controller
+          final controller = Get.find<HomeViewController>();
+
+          /// check if onInit was called
+          expect(controller.initialized, true);
+
+          /// check initial Status
+          expect(controller.status.isLoading, true);
+
+          /// await time request
+          await Future.delayed(const Duration(milliseconds: 100));
+
+          if (controller.status.isError) {
+            expect(controller.state, null);
+          }
+
+          expect(controller.items.length, 2);
+
+          final fakeItem = Item(
+            id: "01",
+            name: 'name01',
+            description: 'description01',
+            type: ItemType.storage,
+          );
+          final dynamic scannedResult = controller.uniqueQRData(fakeItem);
+
+          expect(() async => controller.findScannedQR(scannedResult),
+              throwsA(isA<String>()));
+
+          expect(() async => controller.findScannedQR(scannedResult),
+              throwsA("No Storage Found"));
+        });
+      });
+    });
+  });
 }

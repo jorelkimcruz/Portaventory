@@ -41,15 +41,16 @@ class HomeViewController extends GetxController with StateMixin {
   }
 
   Item findScannedQR(dynamic result) {
+    print('==AAAA===> $result');
     final arArray = result.split("\$");
-    final signature = arArray[0].toString().replaceAll('-', "");
+    final signature = arArray[0].toString().replaceAll('XX', "");
     final id = arArray[1].toString();
     final name = arArray[2];
 
     return items.firstWhere(
       (element) =>
           signature == portaventory && element.id == id && element.name == name,
-      orElse: () => throw 'No Storage found',
+      orElse: () => throw 'No Storage Found',
     );
   }
 
@@ -74,5 +75,9 @@ class HomeViewController extends GetxController with StateMixin {
   Future<List<RecordSnapshot<String, Map<String, Object?>>>>
       fetchItems() async {
     return storeRef.find(database, finder: Finder());
+  }
+
+  String uniqueQRData(Item item) {
+    return "$portaventory${"XX"}\$${item.id}\$${item.name}";
   }
 }

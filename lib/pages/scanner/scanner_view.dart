@@ -18,6 +18,11 @@ class ScannerView extends GetView<ScannerViewController> {
               key: GlobalKey(debugLabel: 'QR'),
               onQRViewCreated: (qrController) =>
                   controller.onQRViewCreated(qrController),
+              onPermissionSet: (a, b) {
+                print('====>AAAAA => $a');
+                print('====>AAAAA => $b');
+              },
+              overlay: QrScannerOverlayShape(),
             ),
           ),
         ],

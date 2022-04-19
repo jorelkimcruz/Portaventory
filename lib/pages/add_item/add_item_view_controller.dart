@@ -8,7 +8,7 @@ class AddItemViewController extends GetxController with StateMixin {
   final Database database;
   final Item? storage;
 
-  final RxString type = 'Item'.obs;
+  final RxString type = ItemType.values.first.name.obs;
   final TextEditingController name = TextEditingController();
   final TextEditingController description = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -42,11 +42,12 @@ class AddItemViewController extends GetxController with StateMixin {
 
   Future<Item> insert(Item item) async {
     // Store some objects
-    final _storeRef = intMapStoreFactory.store();
+    final _storeRef = stringMapStoreFactory.store();
     final count = await _storeRef.count(database,
         filter: Filter.equals(Item.columnName, item.name));
     if (count == 0) {
-      await _storeRef.add(database, item.toMap());
+      final sdsd = await _storeRef.add(database, item.toMap());
+      print("Key: $sdsd Type: ${sdsd.runtimeType}");
       return item;
     } else {
       throw 'Name already exists!';
