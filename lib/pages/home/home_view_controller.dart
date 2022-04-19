@@ -79,4 +79,16 @@ class HomeViewController extends GetxController with StateMixin {
   String uniqueQRData(Item item) {
     return "$portaventory${"XX"}\$${item.id}\$${item.name}";
   }
+
+  List<Item> getAllItems() {
+    List<Item> list = [];
+    for (var storage in items) {
+      for (var item in storage.children!) {
+        item.parent = storage;
+      }
+      list.addAll(storage.children ?? []);
+    }
+    list.addAll(items);
+    return list;
+  }
 }

@@ -29,6 +29,7 @@ class AddItemViewController extends GetxController with StateMixin {
         if (storage!.children == null) {
           storage!.children = [];
         }
+        item.parent = storage;
         storage!.children!.add(item);
         await updateExisting(item);
       }

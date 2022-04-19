@@ -4,6 +4,7 @@ class Item {
   /// ID value will always come from sembast storage
   ///
   String? id;
+  Item? parent;
 
   ItemType? type;
   String? name;
@@ -25,6 +26,7 @@ class Item {
   static String columnType = 'type';
   static String columnDescription = 'description';
   static String columnChildren = 'children';
+  static String columnParent = 'parent';
 
   Map<String, Object?> toMap() {
     var map = <String, Object?>{
@@ -39,6 +41,10 @@ class Item {
     if (id != null) {
       map[columnId] = id;
     }
+
+    // if (parent != null) {
+    //   map[columnParent] = parent!.toMap();
+    // }
     return map;
   }
 
@@ -49,6 +55,7 @@ class Item {
         (element) => element.name == map[columnType],
         orElse: () => ItemType.item);
     name = map[columnName] as String?;
+
     description = map[columnDescription] as String?;
     if (map[columnChildren] != null) {
       children = (map[columnChildren] as List<dynamic>)

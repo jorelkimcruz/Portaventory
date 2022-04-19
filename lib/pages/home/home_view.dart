@@ -8,6 +8,7 @@ import 'package:portaventory/pages/qr_code_view/qr_code_view_binding.dart';
 import 'package:portaventory/pages/routes/app_pages.dart';
 import 'package:portaventory/pages/storage/storage_view_binding.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:search_page/search_page.dart';
 import '../../helpers/exported_packages.dart';
 
 class HomeView extends GetView<HomeViewController> {
@@ -19,6 +20,41 @@ class HomeView extends GetView<HomeViewController> {
     return Scaffold(
       appBar: AppBarWidget(
         title: 'Portaventory',
+        overrideBackButton: IconButton(
+          onPressed: () {
+            showSearch(
+                context: context,
+                delegate: SearchPage<Item>(
+                    items: controller.getAllItems(),
+                    searchLabel: 'Search items',
+                    suggestion: const Center(
+                      child: Text('Filter items by name, description and id'),
+                    ),
+                    failure: const Center(
+                      child: Text('Nothing found :('),
+                    ),
+                    filter: (item) => [
+                          item.id,
+                          item.name,
+                          item.description,
+                        ],
+                    builder: (item) => ListTile(
+                          title: Text("Name: ${item.name!}"),
+                          subtitle: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Description: ${item.description!}"),
+                              if (item.parent != null)
+                                Text('Storage: ${item.parent!.name!}')
+                            ],
+                          ),
+                          onTap: () {},
+                        )));
+          },
+          icon: const Icon(Icons.search_rounded),
+          tooltip: 'Search item',
+        ),
         actions: [
           IconButton(
             onPressed: () async {
