@@ -13,6 +13,13 @@ class AddItemViewController extends GetxController with StateMixin {
   final TextEditingController description = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  bool get isAddingStorage => storage == null;
+  @override
+  void onInit() {
+    super.onInit();
+    type.value = isAddingStorage ? ItemType.storage.name : ItemType.item.name;
+  }
+
   Future<void> saveItem() async {
     final item = Item();
     item.type = type.value.toLowerCase() == ItemType.item.name

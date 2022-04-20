@@ -11,8 +11,8 @@ class AddItemView extends GetView<AddItemViewController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarWidget(
-        title: 'Add Item',
+      appBar: AppBarWidget(
+        title: 'Add ${controller.isAddingStorage ? 'Storage' : 'Item'}',
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -27,9 +27,10 @@ class AddItemView extends GetView<AddItemViewController> {
                   value: controller.type.value,
                   icon: const Icon(Icons.arrow_downward),
                   hint: const Text('Type'),
-                  onChanged: (String? newValue) {
-                    controller.type.value = newValue!;
-                  },
+                  onChanged: null,
+                  // onChanged: (String? newValue) {
+                  //   controller.type.value = newValue!;
+                  // },
                   items: ItemType.values
                       .map((e) => e.name)
                       .toList()

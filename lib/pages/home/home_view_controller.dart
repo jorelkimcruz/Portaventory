@@ -83,7 +83,7 @@ class HomeViewController extends GetxController with StateMixin {
   List<Item> getAllItems() {
     List<Item> list = [];
     for (var storage in items) {
-      for (var item in storage.children!) {
+      for (var item in storage.children ?? []) {
         item.parent = storage;
       }
       list.addAll(storage.children ?? []);
