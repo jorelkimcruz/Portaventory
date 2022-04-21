@@ -1,6 +1,13 @@
 # portaventory
 
-A new Flutter project.
+Personal inventory
+
+- Can add storage/box
+   - can add items to storage/box
+   - generate QR Code
+    - print QR Code
+- Can search items
+- Scan QR Code and shows items inside
 
 ## Getting Started
 
